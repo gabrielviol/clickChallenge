@@ -19,19 +19,22 @@ export function App() {
   function handlePopPoint(){
     const newPoint = [...Point]
     newPoint.pop()
-    
+
     setPoint(newPoint)
   }
 
   return (
     <>
-      <button onClick={handlePopPoint}>
+      <button className='BtUndo' disabled={Point.length === 0} onClick={handlePopPoint}>
         Undo
       </button>
+      <button className='BtRedo' onClick={}>
+        Redo
+      </button>
       <div className="App" onClick={getPosition}>
-        {Point.map(({ pageX, pageY }) => {
+        {Point.map(({ pageX, pageY }, index) => {
           return(
-            <div style={{
+            <div key={index} style={{
               left: pageX -5,
               top: pageY -5,
               position: 'absolute',
