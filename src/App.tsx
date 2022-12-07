@@ -41,16 +41,20 @@ export function App() {
 
   return (
     <>
-      <button className='BtUndo' disabled={point.length === 0} onClick={handlePopPoint}>
-        Undo
-      </button>
-      <button className='BtRedo' disabled={reversePoint.length === 0} onClick={handleRevertPoints}>
-        Redo
-      </button>
-      <button className='BtClear' disabled={reversePoint.length === 0 && point.length === 0} onClick={handleClearPoints}>
-        Clear
-      </button>
+      <div className='Header'>
+        <button className='BtUndo' disabled={point.length === 0} onClick={handlePopPoint}>
+          Undo
+        </button>
+        <button className='BtRedo' disabled={reversePoint.length === 0} onClick={handleRevertPoints}>
+          Redo
+        </button>
+        <button className='BtClear' disabled={reversePoint.length === 0 && point.length === 0} onClick={handleClearPoints}>
+          Clear
+        </button> 
+      </div>     
+
       <div className="App" onClick={getPosition}>
+      
         {point.map(({ pageX, pageY }, index) => {
           return(
             <div key={index} style={{
