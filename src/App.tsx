@@ -1,34 +1,46 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
+import React, { useState } from 'react'
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
-  )
+interface mousePositionProps {
+  pageX: number,
+  pageY: number
 }
 
-export default App
+export function App() {
+  const [Point, setPoint] = useState<mousePositionProps[]>([])
+
+
+  function getPosition(e: React.MouseEvent){
+    const { pageX, pageY } = e
+
+    setPoint([...Point, {pageX, pageY}])
+  }
+
+  function handlePopPoint(){
+    const newPoint = [...Point]
+    newPoint.pop()
+    setPoint(newPoint)
+  }
+
+  return (
+    <>
+      <button onClick={handlePopPoint}>
+        Undo
+      </button>
+      <div className="App" onClick={getPosition}>
+        {Point.map(({ pageX, pageY }) => {
+          return(
+            <div style={{
+              left: pageX -5,
+              top: pageY -5,
+              position: 'absolute',
+              borderRadius: '999rem',
+              backgroundColor: '#7B68EE',
+              padding: '8px'
+            }}></div>
+          )
+        })}
+      </div>
+    </>
+  )
+}
