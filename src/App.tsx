@@ -7,32 +7,51 @@ interface mousePositionProps {
 }
 
 export function App() {
-  const [Point, setPoint] = useState<mousePositionProps[]>([])
+  const [point, setPoint] = useState<mousePositionProps[]>([])
+  const [reversePoint, setReversePoint] = useState<mousePositionProps[]>([])
 
 
   function getPosition(e: React.MouseEvent){
     const { pageX, pageY } = e
 
-    setPoint([...Point, {pageX, pageY}])
+    setPoint([...point, {pageX, pageY}])
   }
 
   function handlePopPoint(){
-    const newPoint = [...Point]
-    newPoint.pop()
+    const newPoint = [...point]
+    const undoPoint = newPoint.pop()
 
     setPoint(newPoint)
+    if(!undoPoint) return
+    setReversePoint([...reversePoint, undoPoint])
+  }
+
+  function handleRevertPoints(){
+    const newRevertPoint = [...reversePoint]
+    const redoPoint = newRevertPoint.pop()
+    if(!redoPoint) return
+    setReversePoint(newRevertPoint)
+    setPoint([...point, redoPoint])
+  }
+
+  function handleClearPoints(){
+    setPoint([])
+    setReversePoint([])
   }
 
   return (
     <>
-      <button className='BtUndo' disabled={Point.length === 0} onClick={handlePopPoint}>
+      <button className='BtUndo' disabled={point.length === 0} onClick={handlePopPoint}>
         Undo
       </button>
-      <button className='BtRedo' onClick={}>
+      <button className='BtRedo' disabled={reversePoint.length === 0} onClick={handleRevertPoints}>
         Redo
       </button>
+      <button className='BtClear' disabled={reversePoint.length === 0 && point.length === 0} onClick={handleClearPoints}>
+        Clear
+      </button>
       <div className="App" onClick={getPosition}>
-        {Point.map(({ pageX, pageY }, index) => {
+        {point.map(({ pageX, pageY }, index) => {
           return(
             <div key={index} style={{
               left: pageX -5,
