@@ -19,6 +19,7 @@ export function App() {
   function handlePopPoint(){
     const newPoint = [...Point]
     newPoint.pop()
+    
     setPoint(newPoint)
   }
 
